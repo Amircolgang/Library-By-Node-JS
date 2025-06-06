@@ -1,13 +1,48 @@
 {
-    "users" : [
-        {"id" : 1  , "name" : "Amir Shirazi" , "username" : "A_Shirazi" , "crime" : 0 , "role" : "ADMIN"} , 
-        {"id" : 1  , "name" : "Parham Shirazi" , "username" : "P_Shirazi" , "crime" : 0 , "role" : "USER"} , 
-        {"id" : 1  , "name" : "Javad Shirazi" , "username" : "J_Shirazi" , "crime" : 0 , "role" : "ADMIN"} , 
-        {"id" : 1  , "name" : "Amin Dashtan" , "username" : "A_Dashtan" , "crime" : 0 , "role" : "USER"}  
-    ] ,
-    "books" : [
-        {"id" : 1 , "title" : "Golestan" , "author" : "Sadi" , "price" : 230000 , "free" : 0} , 
-        {"id" : 1 , "title" : "Boostan" , "author" : "Sadi" , "price" : 12000 , "free" : 0} , 
-        {"id" : 1 , "title" : "Bishoory" , "author" : "Sadi" , "price" : 400000 , "free" : 1} 
-    ]
+  "users": [
+    {
+      "id": 1,
+      "name": "Amir Shirazi",
+      "username": "A_Shirazi",
+      "crime": 0,
+      "role": "ADMIN"
+    },
+    {
+      "id": 1,
+      "name": "Parham Shirazi",
+      "username": "P_Shirazi",
+      "crime": 0,
+      "role": "USER"
+    },
+    {
+      "id": 1,
+      "name": "Javad Shirazi",
+      "username": "J_Shirazi",
+      "crime": 0,
+      "role": "ADMIN"
+    },
+    {
+      "id": 1,
+      "name": "Amin Dashtan",
+      "username": "A_Dashtan",
+      "crime": 0,
+      "role": "USER"
+    }
+  ],
+  "books": [
+    {
+      "id": 2,
+      "title": "Boostan",
+      "author": "Sadi",
+      "price": 12000,
+      "free": 0
+    },
+    {
+      "id": 3,
+      "title": "Bishoory",
+      "author": "Sadi",
+      "price": 400000,
+      "free": 1
+    }
+  ]
 }

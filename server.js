@@ -1,6 +1,7 @@
 const http = require("node:http");
 const fs = require("fs");
 const url = require("url")
+const db = require("./db.json")
 const servere = http.createServer((req, res) => {
     if (req.url == "/api/users" && req.method == "GET") {
         fs.readFile("db.json", (err, db) => {
@@ -14,8 +15,20 @@ const servere = http.createServer((req, res) => {
             res.end();
         });
     } else if (req.method == "DELETE") {
-        const paresedURL = url.parse(req.url , true)
-        console.log(paresedURL.query.id)
+        const paresedURL = url.parse(req.url, true)
+        const bookID = paresedURL.query.id
+        const newBooks = db.books.filter(book => book.id != bookID
+        )
+        fs.writeFile(
+            "db.json",
+            JSON.stringify({ ...db, books: newBooks }),
+            (err) => {
+                if (err) {
+                    throw err
+                }
+                res.write(JSON.stringify({ massage: "Booke Removed" }))
+            }
+        )
         res.end("Test")
     }
 });
