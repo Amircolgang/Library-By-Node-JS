@@ -99,20 +99,75 @@ const servere = http.createServer((req, res) => {
         req.on("end", () => {
             let reqBody = JSON.parse(putBooks)
             db.books.forEach(book => {
-                if(book.id == Number(bookID)){
-                    book.title = reqBody.title ,
-                    book.author = reqBody.author , 
-                    book.title = reqBody.title
+                if (book.id == Number(bookID)) {
+                    book.title = reqBody.title,
+                        book.author = reqBody.author,
+                        book.title = reqBody.title
                 }
             })
 
-            fs.writeFile("db.json" , JSON.stringify(db) , (err) => {
-                if(err){
+            fs.writeFile("db.json", JSON.stringify(db), (err) => {
+                if (err) {
                     throw err
                 }
 
-                res.writeHead(200 , {"Content-Type" : "application/json"})
-                res.write(JSON.stringify({meesage : "Updata Is Succes Fully :)"}))
+                res.writeHead(200, { "Content-Type": "application/json" })
+                res.write(JSON.stringify({ meesage: "Updata Is Succes Fully :)" }))
+                res.end()
+            })
+        })
+
+    }
+    else if (req.method == "POST" && req.url.startsWith("/api/users")) {
+        let userClientPost = ""
+        req.on("data", (data) => {
+            userClientPost = userClientPost + data.toString()
+        })
+        req.on("end", () => {
+            const { name, username, email } = JSON.parse(userClientPost)
+            const newUser = {
+                id: global.crypto.randomUUID()
+                , name,
+                username,
+                email,
+                crime: 0
+            }
+            const newUserData = db.users.push(newUser)
+            fs.writeFile("db.json", JSON.stringify(newUserData), (err) => {
+                if (err) {
+                    throw err
+                }
+            })
+            res.writeHead(201, { "Content-Type": "application/json" })
+            res.write(JSON.stringify({ message: "USer Created Succes Fully" }))
+            res.end()
+        })
+    } else if (req.method == "PUT" && req.url.startsWith("/api/users")) {
+        const parsedURL = url.parse(req.url, true)
+        const idUsers = parsedURL.query.id
+        let dataUSer = ""
+        req.on("data", (data) => {
+            dataUSer += data.toString()
+        })
+
+        req.on("end", (err) => {
+            if (err) {
+                throw err
+            }
+            const { crime } = JSON.parse(dataUSer)
+            db.users.forEach(user => {
+                if (user.id === Number(idUsers)) {
+                    user.crime = crime
+                }
+            })
+
+            fs.writeFile("db.json", JSON.stringify(db), (err) => {
+                if (err) {
+                    throw err
+                }
+
+                res.writeHead(200, { "Content-Type": "application/json" })
+                res.write(JSON.stringify({ message: "Put The User is Succes Fully User Updata :) " }))
                 res.end()
             })
         })
