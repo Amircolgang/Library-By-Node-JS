@@ -14,7 +14,7 @@ const servere = http.createServer((req, res) => {
             res.write(JSON.stringify(data.users));
             res.end();
         });
-    } else if (req.method == "DELETE" && req.url.startsWith == "/api/books") {
+    } else if (req.method == "DELETE" && req.url.startsWith("/api/books")) {
         const paresedURL = url.parse(req.url, true)
         const bookID = paresedURL.query.id
         const newBooks = db.books.filter(book => book.id != bookID)
