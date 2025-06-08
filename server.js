@@ -57,9 +57,20 @@ const servere = http.createServer((req, res) => {
                     id : global.crypto.randomUUID(), ...parsClientBooks , free : 1
                 }
 
-                console.log(newBook)
+                db.books.push(newBook)
 
-                res.end("Books Added")
+                console.log(newBook)
+                fs.writeFile("db.json" , JSON.stringify(db)  , (err)=> {
+                    if (err) {
+                        throw err
+                    }
+
+                    res.writeHead(200, { "Content-Type": "application/json" });
+                    res.write(JSON.stringify({message : "New Book Is succes Fully :)"}));
+                    res.end();
+                })
+
+
             })
     }
 });
