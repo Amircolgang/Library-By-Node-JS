@@ -14,9 +14,9 @@ const servere = http.createServer((req, res) => {
             res.write(JSON.stringify(data.users));
             res.end();
         });
-    }else if (req.method == "GET" && req.url.startsWith("/api/books")) {
-        fs.readFile("db.json" , (err , db) => {
-            if(err){
+    } else if (req.method == "GET" && req.url.startsWith("/api/books")) {
+        fs.readFile("db.json", (err, db) => {
+            if (err) {
                 throw err
             }
 
@@ -29,7 +29,6 @@ const servere = http.createServer((req, res) => {
 
         })
     }
-    
     else if (req.method == "DELETE" && req.url.startsWith("/api/books")) {
         const paresedURL = url.parse(req.url, true)
         const bookID = paresedURL.query.id
@@ -51,7 +50,7 @@ const servere = http.createServer((req, res) => {
                     if (err) {
                         throw err
                     }
-                    res.writeHead(200 , {"Content-Type" : "appliaction/json"})
+                    res.writeHead(200, { "Content-Type": "appliaction/json" })
                     res.write(JSON.stringify({ massage: "Booke Removed" }))
                     res.end()
                 }
@@ -59,35 +58,65 @@ const servere = http.createServer((req, res) => {
 
         }
         res.end("Remove Is Resolve")
-    } else if (req.method == "POST" && req.url.startsWith("/api/books")){
-            let clientBook = ""
+    } else if (req.method == "POST" && req.url.startsWith("/api/books")) {
+        let clientBook = ""
 
-            req.on("data" , (data) => {
-                clientBook = clientBook + data.toString()
-            })
+        req.on("data", (data) => {
+            clientBook = clientBook + data.toString()
+        })
 
-            req.on("end" , () => {
-                const parsClientBooks = JSON.parse(clientBook)
+        req.on("end", () => {
+            const parsClientBooks = JSON.parse(clientBook)
 
-                const newBook = {
-                    id : global.crypto.randomUUID(), ...parsClientBooks , free : 1
+            const newBook = {
+                id: global.crypto.randomUUID(), ...parsClientBooks, free: 1
+            }
+
+            db.books.push(newBook)
+
+            console.log(newBook)
+            fs.writeFile("db.json", JSON.stringify(db), (err) => {
+                if (err) {
+                    throw err
                 }
 
-                db.books.push(newBook)
-
-                console.log(newBook)
-                fs.writeFile("db.json" , JSON.stringify(db)  , (err)=> {
-                    if (err) {
-                        throw err
-                    }
-
-                    res.writeHead(200, { "Content-Type": "application/json" });
-                    res.write(JSON.stringify({message : "New Book Is succes Fully :)"}));
-                    res.end();
-                })
-
-
+                res.writeHead(200, { "Content-Type": "application/json" });
+                res.write(JSON.stringify({ message: "New Book Is succes Fully :)" }));
+                res.end();
             })
+
+
+        })
+    }
+    else if (req.method == "PUT" && req.url.startsWith("/api/books")) {
+        const paresedURL = url.parse(req.url, true)
+        const bookID = paresedURL.query.id
+        let putBooks = ""
+        req.on("data", (data) => {
+            putBooks = putBooks + data.toString()
+        })
+
+        req.on("end", () => {
+            let reqBody = JSON.parse(putBooks)
+            db.books.forEach(book => {
+                if(book.id == Number(bookID)){
+                    book.title = reqBody.title ,
+                    book.author = reqBody.author , 
+                    book.title = reqBody.title
+                }
+            })
+
+            fs.writeFile("db.json" , JSON.stringify(db) , (err) => {
+                if(err){
+                    throw err
+                }
+
+                res.writeHead(200 , {"Content-Type" : "application/json"})
+                res.write(JSON.stringify({meesage : "Updata Is Succes Fully :)"}))
+                res.end()
+            })
+        })
+
     }
 });
 
