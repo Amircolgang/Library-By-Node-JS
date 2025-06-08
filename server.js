@@ -43,6 +43,26 @@ const servere = http.createServer((req, res) => {
 
         }
         res.end("Remove Is Resolve")
+    } else if (req.method == "POST" && req.url.startsWith("/api/books")){
+            let clientBook = ""
+
+            req.on("data" , (data) => {
+                clientBook = clientBook + data.toString()
+            })
+
+            req.on("end" , () => {
+                const parsClientBooks = JSON.parse(clientBook)
+
+                const newBook = {
+                    id : global.crypto.randomUUID ,
+                    title :  parsClientBooks.title  ,
+                    author : parsClientBooks.author , 
+                    price : parsClientBooks.price ,
+                    free : parsClientBooks.free
+                }
+
+                res.end("Books Added")
+            })
     }
 });
 
