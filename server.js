@@ -14,7 +14,23 @@ const servere = http.createServer((req, res) => {
             res.write(JSON.stringify(data.users));
             res.end();
         });
-    } else if (req.method == "DELETE" && req.url.startsWith("/api/books")) {
+    }else if (req.method == "GET" && req.url.startsWith("/api/books")) {
+        fs.readFile("db.json" , (err , db) => {
+            if(err){
+                throw err
+            }
+
+            let data = JSON.parse(db)
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.write(JSON.stringify(data.books))
+            res.end()
+            console.log(JSON.stringify(data))
+            console.log(data)
+
+        })
+    }
+    
+    else if (req.method == "DELETE" && req.url.startsWith("/api/books")) {
         const paresedURL = url.parse(req.url, true)
         const bookID = paresedURL.query.id
         const newBooks = db.books.filter(book => book.id != bookID)
