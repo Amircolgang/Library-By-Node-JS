@@ -54,12 +54,10 @@ const servere = http.createServer((req, res) => {
                 const parsClientBooks = JSON.parse(clientBook)
 
                 const newBook = {
-                    id : global.crypto.randomUUID ,
-                    title :  parsClientBooks.title  ,
-                    author : parsClientBooks.author , 
-                    price : parsClientBooks.price ,
-                    free : parsClientBooks.free
+                    id : global.crypto.randomUUID(), ...parsClientBooks , free : 1
                 }
+
+                console.log(newBook)
 
                 res.end("Books Added")
             })
