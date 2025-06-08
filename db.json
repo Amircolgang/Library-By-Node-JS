@@ -8,21 +8,21 @@
       "role": "ADMIN"
     },
     {
-      "id": 1,
+      "id": 2,
       "name": "Parham Shirazi",
       "username": "P_Shirazi",
       "crime": 0,
       "role": "USER"
     },
     {
-      "id": 1,
+      "id": 3,
       "name": "Javad Shirazi",
       "username": "J_Shirazi",
       "crime": 0,
       "role": "ADMIN"
     },
     {
-      "id": 1,
+      "id": 4,
       "name": "Amin Dashtan",
       "username": "A_Dashtan",
       "crime": 0,
@@ -31,11 +31,18 @@
   ],
   "books": [
     {
-      "id": 2,
-      "title": "Boostan",
+      "id": 1,
+      "title": "Bishoory",
       "author": "Sadi",
-      "price": 12000,
-      "free": 0
+      "price": 400000,
+      "free": 1
+    },
+    {
+      "id": 2,
+      "title": "Bishoory",
+      "author": "Sadi",
+      "price": 400000,
+      "free": 1
     },
     {
       "id": 3,
