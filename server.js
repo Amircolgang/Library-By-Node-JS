@@ -28,8 +28,7 @@ const servere = http.createServer((req, res) => {
             console.log(data)
 
         })
-    }
-    else if (req.method == "DELETE" && req.url.startsWith("/api/books")) {
+    } else if (req.method == "DELETE" && req.url.startsWith("/api/books")) {
         const paresedURL = url.parse(req.url, true)
         const bookID = paresedURL.query.id
         const newBooks = db.books.filter(book => book.id != bookID)
@@ -87,8 +86,7 @@ const servere = http.createServer((req, res) => {
 
 
         })
-    }
-    else if (req.method == "PUT" && req.url.startsWith("/api/books")) {
+    } else if (req.method == "PUT" && req.url.startsWith("/api/books")) {
         const paresedURL = url.parse(req.url, true)
         const bookID = paresedURL.query.id
         let putBooks = ""
@@ -117,30 +115,72 @@ const servere = http.createServer((req, res) => {
             })
         })
 
-    }
-    else if (req.method == "POST" && req.url.startsWith("/api/users")) {
+    } else if (req.method == "PUT" && req.url.startsWith("/api/users/upgrad")) {
+        let parsedUrl = url.parse(req.url, true)
+        let parsedId = parsedUrl.query.id
+        let roleDataUser = "";
+        req.on("data", (data) => {
+            roleDataUser += data.toString()
+        })
+
+        req.on("end", (err) => {
+            if (err) {
+                throw err
+            }
+            const { role } = JSON.parse(roleDataUser)
+            console.log(parsedId)
+            db.users.forEach(user => {
+                if (user.id === Number(parsedId)) {
+                    user.role = role
+                }
+            })
+
+            fs.writeFile("db.json", JSON.stringify(db), (err) => {
+                if (err) {
+                    throw err
+                }
+
+                res.writeHead(201, { "Content-Type": "application/json" })
+                res.write(JSON.stringify({ message: "The youser Role Upgareded :)" }))
+                res.end()
+            })
+        })
+    } else if (req.method == "POST" && req.url.startsWith("/api/users")) {
         let userClientPost = ""
         req.on("data", (data) => {
             userClientPost = userClientPost + data.toString()
         })
         req.on("end", () => {
             const { name, username, email } = JSON.parse(userClientPost)
-            const newUser = {
-                id: global.crypto.randomUUID()
-                , name,
-                username,
-                email,
-                crime: 0
+            const existUSer = db.users.find(user => user.name === name || user.username === username || user.email === email)
+            if (existUSer) {
+                res.writeHead(409, { "Content-Type": "application/json" })
+                res.write(JSON.stringify({ message: "User Alredy eited :(" }))
+                res.end()
             }
-            const newUserData = db.users.push(newUser)
-            fs.writeFile("db.json", JSON.stringify(newUserData), (err) => {
-                if (err) {
-                    throw err
+            else if (name == " " || username == " " || email == " ") {
+                res.writeHead(401, { "Content-Type": "application/json" })
+                res.write(JSON.stringify({ message: "USer Created Note Succes Fully email or username is empty " }))
+                res.end()
+            } else {
+                const newUser = {
+                    id: global.crypto.randomUUID()
+                    , name,
+                    username,
+                    email,
+                    crime: 0
                 }
-            })
-            res.writeHead(201, { "Content-Type": "application/json" })
-            res.write(JSON.stringify({ message: "USer Created Succes Fully" }))
-            res.end()
+                const newUserData = db.users.push(newUser)
+                fs.writeFile("db.json", JSON.stringify(newUserData), (err) => {
+                    if (err) {
+                        throw err
+                    }
+                })
+                res.writeHead(422, { "Content-Type": "application/json" })
+                res.write(JSON.stringify({ message: "USer Created Succes Fully" }))
+                res.end()
+            }
+
         })
     } else if (req.method == "PUT" && req.url.startsWith("/api/users")) {
         const parsedURL = url.parse(req.url, true)

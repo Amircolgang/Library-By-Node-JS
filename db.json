@@ -5,28 +5,30 @@
       "name": "Amir Shirazi",
       "username": "A_Shirazi",
       "crime": 0,
-      "role": "ADMIN"
+      "role": "ADMIN",
+      "email": "example@gmail.com"
     },
     {
       "id": 2,
       "name": "Parham Shirazi",
       "username": "P_Shirazi",
-      "crime": 220000,
-      "role": "USER"
+      "role": "ADMIN",
+      "email": "example@gmail.com"
     },
     {
       "id": 3,
       "name": "Javad Shirazi",
       "username": "J_Shirazi",
-      "crime": 0,
-      "role": "ADMIN"
+      "role": "FOUNDER",
+      "email": "example@gmail.com"
     },
     {
       "id": 4,
       "name": "Amin Dashtan",
       "username": "A_Dashtan",
       "crime": 0,
-      "role": "USER"
+      "role": "USER",
+      "email": "example@gmail.com"
     }
   ],
   "books": [
